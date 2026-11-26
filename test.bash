@@ -9,39 +9,45 @@ ng () {
 
 res=0
 
-### plus: NORMAL INPUT ###
-out=$(seq 5 | ./plus)
-[ "$?" = 0 ]      || ng "$LINENO"
-[ "${out}" = 15 ] || ng "$LINENO"
-
-### plus: STRANGE INPUT ###
-out=$(echo あ | ./plus 2>/dev/null)
-[ "$?" = 1 ]      || ng "$LINENO"
-[ "${out}" = "" ] || ng "$LINENO"
-
-out=$(echo | ./plus 2>/dev/null)
-[ "$?" = 1 ]      || ng "$LINENO"
-[ "${out}" = "" ] || ng "$LINENO"
-
-### stats: NORMAL INPUT ###
+### NORMAL INPUT ###
 out=$(seq 5 | ./stats)
-[ "$?" = 0 ] || ng "$LINENO"
-[ "${out}" = "count: 5, sum: 15, mean: 3, min: 1, max: 5" ] || ng "$LINENO"
+[ "$?" = 0 ]               || ng "$LINENO"
+[ "${out}" = "5 15 3 1 5" ] || ng "$LINENO"
+
+out=$(seq 5 | ./stats --count)
+[ "$?" = 0 ]     || ng "$LINENO"
+[ "${out}" = "5" ] || ng "$LINENO"
+
+out=$(seq 5 | ./stats --sum)
+[ "$?" = 0 ]      || ng "$LINENO"
+[ "${out}" = "15" ] || ng "$LINENO"
 
 out=$(seq 5 | ./stats --mean)
 [ "$?" = 0 ]     || ng "$LINENO"
 [ "${out}" = "3" ] || ng "$LINENO"
 
+out=$(seq 5 | ./stats --min)
+[ "$?" = 0 ]     || ng "$LINENO"
+[ "${out}" = "1" ] || ng "$LINENO"
+
+out=$(seq 5 | ./stats --max)
+[ "$?" = 0 ]     || ng "$LINENO"
+[ "${out}" = "5" ] || ng "$LINENO"
+
 out=$(printf "1.5\n2.5\n" | ./stats --sum)
 [ "$?" = 0 ]     || ng "$LINENO"
 [ "${out}" = "4" ] || ng "$LINENO"
 
-### stats: STRANGE INPUT ###
+### STRANGE INPUT ###
 out=$(echo abc | ./stats 2>/dev/null)
 [ "$?" = 1 ]      || ng "$LINENO"
 [ "${out}" = "" ] || ng "$LINENO"
 
 out=$(echo -n "" | ./stats 2>/dev/null)
+[ "$?" = 1 ]      || ng "$LINENO"
+[ "${out}" = "" ] || ng "$LINENO"
+
+out=$(echo | ./stats 2>/dev/null)
 [ "$?" = 1 ]      || ng "$LINENO"
 [ "${out}" = "" ] || ng "$LINENO"
 
