@@ -1,4 +1,3 @@
-cat << 'EOF' > README.md
 # statsコマンド
 
 ![test](https://github.com/Kaoru031/robosys2026/actions/workflows/test.yml/badge.svg)
