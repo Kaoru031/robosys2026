@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Kaoru Kitaya
+# SPDX-License-Identifier: BSD-3-Clause
+
+import sys
+
+
+def parse_args(args):
+    valid_opts = {"--sum", "--mean", "--min", "--max", "--count"}
+    if not args:
+        return None
+    if len(args) > 1 or args[0] not in valid_opts:
+        sys.stderr.write(f"Error: invalid option '{' '.join(args)}'\n")
+        sys.exit(1)
+    return args[0]
+
+
+def main():
+    opt = parse_args(sys.argv[1:])
+    nums = []
+
+    for line in sys.stdin:
+        s = line.strip()
+        if not s:
+            sys.stderr.write("Error: empty line in input\n")
+            sys.exit(1)
+        try:
+            nums.append(float(s))
+        except ValueError:
+            sys.stderr.write(f"Error: cannot convert '{s}' to number\n")
+            sys.exit(1)
+
+    if not nums:
+        sys.stderr.write("Error: no input data\n")
+        sys.exit(1)
+
+    count = len(nums)
+    total = sum(nums)
+    mean = total / count
+    minimum = min(nums)
+    maximum = max(nums)
+
+    def fmt(val):
+        return str(int(val)) if val.is_integer() else f"{val:.4g}"
+
+    if opt == "--count":
+        print(count)
+    elif opt == "--sum":
+        print(fmt(total))
+    elif opt == "--mean":
+        print(fmt(mean))
+    elif opt == "--min":
+        print(fmt(minimum))
+    elif opt == "--max":
+        print(fmt(maximum))
+    else:
+        print(f"count: {count}, sum: {fmt(total)}, mean: {fmt(mean)}, min: {fmt(minimum)}, max: {fmt(maximum)}")
+
+
+if __name__ == "__main__":
+    main()
