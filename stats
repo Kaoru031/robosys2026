@@ -6,7 +6,7 @@ import sys
 
 
 def parse_args(args):
-    valid_opts = {"--sum", "--mean", "--min", "--max", "--count"}
+    valid_opts = {"--count", "--sum", "--mean", "--min", "--max"}
     if not args:
         return None
     if len(args) > 1 or args[0] not in valid_opts:
@@ -54,7 +54,7 @@ def main():
     elif opt == "--max":
         print(fmt(maximum))
     else:
-        print(f"count: {count}, sum: {fmt(total)}, mean: {fmt(mean)}, min: {fmt(minimum)}, max: {fmt(maximum)}")
+        print(f"{count} {fmt(total)} {fmt(mean)} {fmt(minimum)} {fmt(maximum)}")
 
 
 if __name__ == "__main__":
